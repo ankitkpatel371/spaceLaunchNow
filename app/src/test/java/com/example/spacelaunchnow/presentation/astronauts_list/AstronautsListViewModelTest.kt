@@ -34,20 +34,20 @@ class AstronautsListViewModelTest {
                 id = 1,
                 name = "Hero",
                 nationality = "American",
-                dateOfBirth = "1/1/1990",
-                dateOfDeath = "1/1/2022",
-                firstFlight = "1/1/2008",
-                lastFlight = "2/2/2012",
+                dateOfBirth = "13/11/1974",
+                dateOfDeath = "",
+                firstFlight = "24/11/2014",
+                lastFlight ="27/04/2022",
                 profileImageThumbnail = "https://example.com/image.jpg"
             ),
             Astronaut(
                 id = 2,
                 name = "Astronaut",
                 nationality = "American",
-                dateOfBirth = "1/1/1990",
-                dateOfDeath = "1/1/2022",
-                firstFlight = "1/1/2008",
-                lastFlight = "2/2/2012",
+                dateOfBirth = "13/11/1974",
+                dateOfDeath = "",
+                firstFlight = "24/11/2014",
+                lastFlight ="27/04/2022",
                 profileImageThumbnail = "https://example.com/image.jpg"
             )
         )

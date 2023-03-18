@@ -6,7 +6,6 @@ import com.example.spacelaunchnow.data.remote.dto.AstronautDto
 import com.example.spacelaunchnow.data.remote.dto.AstronautsDto
 import com.example.spacelaunchnow.data.remote.dto.FlightDto
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
@@ -19,12 +18,12 @@ class FakeAstronautRepository : AstronautRepository {
         mutableListOf(
             AstronautDto(
                 bio = "This is Fake Bio",
-                date_of_birth = "1/1/1990",
-                date_of_death = "1/1/2022",
-                first_flight = "1/1/2008",
+                date_of_birth = "1974-11-13",
+                date_of_death = null,
+                first_flight = "2014-11-24T07:01:14+10:00",
                 id = 1,
                 instagram = null,
-                last_flight = "2/2/2012",
+                last_flight = "2022-04-27T18:52:55+11:00",
                 name = "Hero",
                 nationality = "American",
                 profile_image_thumbnail = "https://example.com/image.jpg",
@@ -34,12 +33,12 @@ class FakeAstronautRepository : AstronautRepository {
             ),
             AstronautDto(
                 bio = "This is Fake Bio",
-                date_of_birth = "1/1/1990",
-                date_of_death = "1/1/2022",
-                first_flight = "1/1/2008",
+                date_of_birth = "1974-11-13",
+                date_of_death = null,
+                first_flight = "2014-11-24T07:01:14+10:00",
                 id = 2,
                 instagram = null,
-                last_flight = "2/2/2012",
+                last_flight = "2022-04-27T18:52:55+11:00",
                 name = "Astronaut",
                 nationality = "American",
                 profile_image_thumbnail = "https://example.com/image.jpg",
@@ -62,13 +61,13 @@ class FakeAstronautRepository : AstronautRepository {
     private val astronautDetailsDto = AstronautDetailsDto(
         agency = AgencyDto(id = 1, name = "agency", type = "type", url = "url"),
         bio = "This is Fake Bio",
-        date_of_birth = "1/1/1990",
-        date_of_death = "2/2/2022",
-        first_flight = "1/1/2020",
+        date_of_birth = "1974-11-13",
+        date_of_death = null,
+        first_flight = "2014-11-24T07:01:14+10:00",
         flights = listOf(FlightDto(name = "ABC", id = "1", url = "url")),
         id = 1,
         instagram = null,
-        last_flight = "",
+        last_flight = "2022-04-27T18:52:55+11:00",
         name = "John Doe",
         nationality = "American",
         profile_image = "https://example.com/image.jpg",
