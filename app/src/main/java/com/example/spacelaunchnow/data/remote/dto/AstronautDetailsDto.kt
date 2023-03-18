@@ -1,5 +1,6 @@
 package com.example.spacelaunchnow.data.remote.dto
 
+import com.example.spacelaunchnow.common.toDate
 import com.example.spacelaunchnow.domain.model.AstronautDetails
 
 data class AstronautDetailsDto(
@@ -24,12 +25,12 @@ data class AstronautDetailsDto(
 fun AstronautDetailsDto.toAstronautDetails() = AstronautDetails(
     agency = agency.toAgency(),
     bio = bio ?: "Not Available",
-    dateOfBirth = date_of_birth ?: "-",
-    dateOfDeath = date_of_death ?: "-",
-    firstFlight = first_flight ?: "-",
+    dateOfBirth = date_of_birth?.toDate() ?: "-",
+    dateOfDeath = date_of_death?.toDate() ?: "-",
+    firstFlight = first_flight?.toDate() ?: "-",
     flights = flights.map { it.toFlight() },
     id = id,
-    lastFlight = last_flight ?: "-",
+    lastFlight = last_flight?.toDate() ?: "-",
     name = name,
     nationality = nationality,
     profileImage = profile_image,
