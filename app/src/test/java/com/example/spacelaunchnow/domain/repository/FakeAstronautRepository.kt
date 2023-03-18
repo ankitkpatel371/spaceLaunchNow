@@ -5,6 +5,13 @@ import com.example.spacelaunchnow.data.remote.dto.AstronautDetailsDto
 import com.example.spacelaunchnow.data.remote.dto.AstronautDto
 import com.example.spacelaunchnow.data.remote.dto.AstronautsDto
 import com.example.spacelaunchnow.data.remote.dto.FlightDto
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
+import java.io.IOException
+
 
 class FakeAstronautRepository : AstronautRepository {
 
@@ -43,7 +50,16 @@ class FakeAstronautRepository : AstronautRepository {
         )
     )
 
-    val astronautDetailsDto = AstronautDetailsDto(
+    private val httpErrorResponse: Response<Error> = Response.error(
+        403,
+        "Not Found"
+            .toResponseBody("application/json".toMediaTypeOrNull())
+    )
+
+    private var isIOException = false
+    private var isHTTPException = false
+
+    private val astronautDetailsDto = AstronautDetailsDto(
         agency = AgencyDto(id = 1, name = "agency", type = "type", url = "url"),
         bio = "This is Fake Bio",
         date_of_birth = "1/1/1990",
@@ -63,10 +79,30 @@ class FakeAstronautRepository : AstronautRepository {
     )
 
     override suspend fun getAstronautsList(): AstronautsDto {
+        if (isIOException) {
+            throw IOException()
+        }
+        if (isHTTPException) {
+            throw HttpException(httpErrorResponse)
+        }
         return astronautsDto
     }
 
     override suspend fun getAstronautDetails(astronautID: Int): AstronautDetailsDto {
+        if (isIOException) {
+            throw IOException()
+        }
+        if (isHTTPException) {
+            throw HttpException(httpErrorResponse)
+        }
         return astronautDetailsDto
+    }
+
+    fun shouldReturnIOException(_isIOException: Boolean) {
+        isIOException = _isIOException
+    }
+
+    fun shouldReturnHTTPException(_isHTTPException: Boolean) {
+        isHTTPException = _isHTTPException
     }
 }

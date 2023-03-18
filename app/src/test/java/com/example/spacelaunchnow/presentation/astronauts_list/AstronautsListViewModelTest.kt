@@ -24,10 +24,9 @@ class AstronautsListViewModelTest {
 
     private lateinit var viewModel: AstronautsListViewModel
 
-    private val fakeAstronautRepository = FakeAstronautRepository()
+    private lateinit var fakeAstronautRepository : FakeAstronautRepository
 
-    private val fakeGetAstronautsUseCase =
-        FakeGetAstronautsUseCase(fakeAstronautRepository)
+    private lateinit var fakeGetAstronautsUseCase : FakeGetAstronautsUseCase
 
     private val astronautsList = Astronauts(
         mutableListOf(
@@ -57,6 +56,9 @@ class AstronautsListViewModelTest {
 
     @Before
     fun setup() {
+        fakeAstronautRepository = FakeAstronautRepository()
+        fakeGetAstronautsUseCase =
+            FakeGetAstronautsUseCase(fakeAstronautRepository)
         viewModel = AstronautsListViewModel(fakeGetAstronautsUseCase)
     }
 
@@ -77,7 +79,7 @@ class AstronautsListViewModelTest {
     }
 
     @Test
-    fun stateIsLoadingWhenDetailsIsFail() = runTest {
+    fun stateIsLoadingWhenListIsFail() = runTest {
         viewModel.getAstronauts()
         fakeGetAstronautsUseCase.setShouldReturnError(true)
         viewModel.state.test {
@@ -86,7 +88,41 @@ class AstronautsListViewModelTest {
                 awaitItem(),
             )
             Assert.assertEquals(
-                AstronautsState(error = "Failed to fetch astronaut details"),
+                AstronautsState(error = "Failed to fetch astronaut list"),
+                awaitItem(),
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun stateIsLoadingWhenListIsWithIOException() = runTest {
+        viewModel.getAstronauts()
+        fakeAstronautRepository.shouldReturnIOException(true)
+        viewModel.state.test {
+            Assert.assertEquals(
+                AstronautsState(isLoading = true),
+                awaitItem(),
+            )
+            Assert.assertEquals(
+                AstronautsState(error = "Can't connect to server. Please check your internet connection."),
+                awaitItem(),
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun stateIsLoadingWhenListIsWithHTTPException() = runTest {
+        viewModel.getAstronauts()
+        fakeAstronautRepository.shouldReturnHTTPException(true)
+        viewModel.state.test {
+            Assert.assertEquals(
+                AstronautsState(isLoading = true),
+                awaitItem(),
+            )
+            Assert.assertEquals(
+                AstronautsState(error = "Server Error Occurred"),
                 awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()

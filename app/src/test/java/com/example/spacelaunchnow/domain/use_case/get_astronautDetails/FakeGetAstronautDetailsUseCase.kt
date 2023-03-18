@@ -1,14 +1,13 @@
 package com.example.spacelaunchnow.domain.use_case.get_astronautDetails
 
 import com.example.spacelaunchnow.common.Resource
-import com.example.spacelaunchnow.data.remote.dto.toAstronautDetails
 import com.example.spacelaunchnow.domain.model.AstronautDetails
 import com.example.spacelaunchnow.domain.repository.FakeAstronautRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeGetAstronautDetailsUseCase(var fakeAstronautRepository: FakeAstronautRepository) :
+class FakeGetAstronautDetailsUseCase(fakeAstronautRepository: FakeAstronautRepository) :
     GetAstronautDetailsUseCase(fakeAstronautRepository) {
 
     private var shouldReturnError = false
@@ -23,11 +22,9 @@ class FakeGetAstronautDetailsUseCase(var fakeAstronautRepository: FakeAstronautR
         if (shouldReturnError) {
             emit(Resource.Error("Failed to fetch astronaut details"))
         } else {
-            emit(
-                Resource.Success(
-                    fakeAstronautRepository.getAstronautDetails(1).toAstronautDetails()
-                )
-            )
+            super.invoke(astronautID).collect {
+                emit(it)
+            }
         }
     }
 }
